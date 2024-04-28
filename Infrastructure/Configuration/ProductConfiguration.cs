@@ -1,11 +1,7 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection.Emit;
 
 namespace Infrastructure.Configuration
 {
@@ -13,7 +9,15 @@ namespace Infrastructure.Configuration
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
-            builder.HasIndex(x => new { x.Name });
+            builder.HasIndex(x => new { x.NameAr });
+            builder.Property(x => x.NameAr).IsRequired().HasMaxLength(255);
+
+            builder.Property(x => x.NameEn).HasColumnType("VARCHAR").HasMaxLength(255).IsUnicode(false);
+
+            builder
+            .HasOne(x => x.category)
+            .WithOne()
+            .HasForeignKey<Category>(e => e.Id);
 
             builder.OwnsMany<ProductAttachment>(x => x.Attachments, attachment =>
             {
@@ -21,6 +25,7 @@ namespace Infrastructure.Configuration
                 attachment.WithOwner().HasForeignKey("ProductId");
                 attachment.Property(x => x.Path).IsRequired();
             });
+
         }
     }
 }

@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240428151512_add_columns_nameAr_nameEn_coast_stockQuantity_to_product_table")]
+    partial class add_columns_nameAr_nameEn_coast_stockQuantity_to_product_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,28 +28,25 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("IsShowable")
                         .HasColumnType("bit");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("NVARCHAR");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NameEn")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("VARCHAR");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NameAr");
-
-                    b.HasIndex("NameEn");
-
-                    b.ToTable("Categories");
+                    b.ToTable("categories");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product", b =>
@@ -57,7 +57,7 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<double>("Coast")
@@ -69,13 +69,11 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("NameAr")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NameEn")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("VARCHAR");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -87,50 +85,47 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("NameAr");
-
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Category", b =>
+            modelBuilder.Entity("Domain.Entities.ProductAttachment", b =>
                 {
-                    b.HasOne("Domain.Entities.Product", null)
-                        .WithOne("category")
-                        .HasForeignKey("Domain.Entities.Category", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductAttachment");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product", b =>
                 {
-                    b.HasOne("Domain.Entities.Category", null)
+                    b.HasOne("Domain.Entities.Category", "category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.OwnsMany("Domain.Entities.ProductAttachment", "Attachments", b1 =>
-                        {
-                            b1.Property<int>("ProductId")
-                                .HasColumnType("int");
+                    b.Navigation("category");
+                });
 
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
-
-                            b1.Property<string>("Path")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.HasKey("ProductId", "Id");
-
-                            b1.ToTable("ProductAttachments", (string)null);
-
-                            b1.WithOwner()
-                                .HasForeignKey("ProductId");
-                        });
-
-                    b.Navigation("Attachments");
+            modelBuilder.Entity("Domain.Entities.ProductAttachment", b =>
+                {
+                    b.HasOne("Domain.Entities.Product", null)
+                        .WithMany("Attachments")
+                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("Domain.Entities.Category", b =>
@@ -140,8 +135,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Product", b =>
                 {
-                    b.Navigation("category")
-                        .IsRequired();
+                    b.Navigation("Attachments");
                 });
 #pragma warning restore 612, 618
         }

@@ -25,7 +25,10 @@ namespace Application.Product.CreateProduct
                 _productRepository.Insert(new Domain.Entities.Product
                 {
                     Description = input.Description,
-                    Name = input.Name,
+                    NameAr = input.NameAr,
+                    NameEn = input.NameEn,
+                    Coast = input.Coast,
+                    StockQuantity = input.StockQuantity,
                     Price = input.Price,
                     Attachments = new List<ProductAttachment>
                 {
