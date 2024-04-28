@@ -14,10 +14,10 @@ namespace Infrastructure.Configuration
 
             builder.Property(x => x.NameEn).HasColumnType("VARCHAR").HasMaxLength(255).IsUnicode(false);
 
-            builder
-            .HasOne(x => x.category)
-            .WithOne()
-            .HasForeignKey<Category>(e => e.Id);
+            //builder
+            //.HasOne(x => x.category)
+            //.WithOne()
+            //.HasForeignKey<Category>(e => e.Id);
 
             builder.OwnsMany<ProductAttachment>(x => x.Attachments, attachment =>
             {

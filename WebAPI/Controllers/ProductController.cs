@@ -22,5 +22,12 @@ namespace WebAPI.Controllers
             var createProductCommand = new CreateProductCommand(_productRepository);
             return Ok(createProductCommand.AddNewProduct(input));
         }
+
+        [HttpGet("[action]")]
+        public JsonResult GetAll()
+        {
+            var producData = _productRepository.GetAll();
+            return new JsonResult(Ok(producData));
+        }
     }
 }

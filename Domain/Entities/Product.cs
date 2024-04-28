@@ -14,6 +14,9 @@ namespace Domain.Entities
         public decimal Price { get; set; }
         public double Coast { get; set; }
         public int StockQuantity { get; set; }
+
+        [ForeignKey(nameof(category))]
+        public int categoryId { get; set; }
         public Category category { get; set; }
         public List<ProductAttachment> Attachments { get; set; }
     }

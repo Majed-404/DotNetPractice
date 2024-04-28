@@ -30,6 +30,7 @@ namespace Application.Product.CreateProduct
                     Coast = input.Coast,
                     StockQuantity = input.StockQuantity,
                     Price = input.Price,
+                    categoryId = input.categoryId,
                     Attachments = new List<ProductAttachment>
                 {
                     new ProductAttachment
@@ -51,5 +52,12 @@ namespace Application.Product.CreateProduct
                 throw;
             }
         }
+
+        public IEnumerable<Domain.Entities.Product> Getproducts()
+        {
+
+            return _productRepository.GetAll();
+        }
+
     }
 }
