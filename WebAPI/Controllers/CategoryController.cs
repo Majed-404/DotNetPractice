@@ -1,5 +1,5 @@
-﻿using Application.Product.CreateCategory;
-using Application.Product.Dto;
+﻿using Application.Category.CreateCategory;
+using Application.Category.Dto;
 using Application.Services;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;

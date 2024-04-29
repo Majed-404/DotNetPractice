@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Product.Dto
+namespace Application.Category.Dto
 {
     public class AddCategoryDto
     {

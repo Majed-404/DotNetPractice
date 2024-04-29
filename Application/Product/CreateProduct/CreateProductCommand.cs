@@ -3,6 +3,7 @@ using Application.Services;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,6 +58,44 @@ namespace Application.Product.CreateProduct
         {
 
             return _productRepository.GetAll();
+        }
+
+        public Domain.Entities.Product GetProductById(int id)
+        {
+           return _productRepository.GetById(id);
+        }
+
+        public bool EditProduct(int id , AddProductDto input)
+        {
+            try
+            {
+                if (id == 0)
+                    return false;
+                
+                var productData = _productRepository.GetById(id);
+
+                if(productData == null)
+                    return false;
+
+                Domain.Entities.Product product = new Domain.Entities.Product();
+                product.Id = id;
+                product.Description = input.Description;
+                product.NameAr = input.NameAr;
+                product.NameEn = input.NameEn;
+                product.Coast = input.Coast;
+                product.StockQuantity = input.StockQuantity;
+                product.Price = input.Price;
+                product.categoryId = input.categoryId;
+
+                _productRepository.Update(product);
+
+                _productRepository.Save();
+                return true;
+            }
+            catch(Exception)
+            {
+                throw;
+            }
         }
 
     }
