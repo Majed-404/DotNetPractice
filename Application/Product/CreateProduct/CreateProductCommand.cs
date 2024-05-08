@@ -54,16 +54,9 @@ namespace Application.Product.CreateProduct
             }
         }
 
-        public IEnumerable<Domain.Entities.Product> Getproducts()
-        {
+        public IEnumerable<Domain.Entities.Product> Getproducts() => _productRepository.GetAll();
 
-            return _productRepository.GetAll();
-        }
-
-        public Domain.Entities.Product GetProductById(int id)
-        {
-           return _productRepository.GetById(id);
-        }
+        public Domain.Entities.Product GetProductById(int id) => _productRepository.GetById(id);
 
         public bool EditProduct(int id , AddProductDto input)
         {
@@ -97,6 +90,27 @@ namespace Application.Product.CreateProduct
                 throw;
             }
         }
+
+
+        public string DeleteProduct(int id)
+        {
+            try
+            {
+                //var productData = _productRepository.GetById(id);
+                //if (productData is null)
+                //    return $"Product id {id} is not exists";
+
+                _productRepository.Delete(id);
+                _productRepository.Save();
+                return "Delete Successfully";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
 
     }
 }

@@ -25,19 +25,11 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetAll()
-        {
-            var producData = _productRepository.GetAll();
-            return new JsonResult(Ok(producData));
-        }
+        public JsonResult GetAll() => new JsonResult(Ok(_productRepository.GetAll()));
 
 
         [HttpGet("{id}")]
-        public JsonResult GetProductById(int id)
-        {
-            var producData = _productRepository.GetById(id);
-            return new JsonResult(Ok(producData));
-        }
+        public JsonResult GetProductById(int id) => new JsonResult(Ok(_productRepository.GetById(id)));
 
         [HttpPut("{id}")]
         public IActionResult UpdateProduct(int id, [FromBody] AddProductDto model)
@@ -50,7 +42,14 @@ namespace WebAPI.Controllers
                 return NotFound($"Product id {id} is not exists");
 
             var createProductCommand = new CreateProductCommand(_productRepository);
-            return Ok(createProductCommand.EditProduct(id,model));
+            return Ok(createProductCommand.EditProduct(id, model));
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteProduct(int id)
+        {
+            var createProductCommand = new CreateProductCommand(_productRepository);
+            return Ok(createProductCommand.DeleteProduct(id));
         }
 
 

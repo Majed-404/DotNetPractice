@@ -27,5 +27,47 @@ namespace WebAPI.Controllers
 
             return Ok(category);
         }
+
+
+        [HttpGet("[action]")]
+        public JsonResult GetAllCategory() => new JsonResult(Ok(_categoryRepository.GetAll()));
+
+
+        [HttpGet("{id}")]
+        public IActionResult GetCategoryById(int id)
+        {
+            var createCategoryCommand = new CreateCategoryCommand(_categoryRepository);
+            var data = createCategoryCommand.GetCategoryById(id);
+            if (data is null)
+                return NotFound($"Category Id {id} is not exists");
+
+            return Ok(data);
+        }
+
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateCategory(int id, [FromBody] AddCategoryDto category)
+        {
+            if (id == 0)
+                return BadRequest();
+
+            var createCategoryCommand = new CreateCategoryCommand(_categoryRepository);
+            var producData = createCategoryCommand.GetCategoryById(id);
+            if (producData is null)
+                return NotFound($"Product id {id} is not exists");
+
+            return Ok(createCategoryCommand.EditCategory(id, category));
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteCategory(int id)
+        {
+            if (id == 0)
+                return BadRequest();
+
+            _categoryRepository.Delete(id);
+            _categoryRepository.Save();
+            return Ok();
+        }
     }
 }
