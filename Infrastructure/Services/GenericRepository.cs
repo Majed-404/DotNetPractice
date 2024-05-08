@@ -18,30 +18,15 @@ namespace Infrastructure.Services
             _entity = _context.Set<T>();    
         }
         
-        public void Save()
-        {
-            _context.SaveChanges();
-        }
+        public void Save() => _context.SaveChanges();
 
-        public IEnumerable<T> GetAll()
-        {
-            return _entity.ToList();
-        }
+        public async Task<IEnumerable<T>> GetAll() => await _entity.ToListAsync();
 
-        public T GetById(object id)
-        {
-            return _entity.Find(id);
-        }
+        public async Task<T> GetById(object id) => await _entity.FindAsync(id);
 
-        public void Insert(T obj)
-        {
-            _entity.Add(obj);
-        }
+        public void Insert(T obj) => _entity.Add(obj);
 
-        public void Update(T obj)
-        {
-            _entity.Update(obj);
-        }
+        public void Update(T obj) => _entity.Update(obj);
 
         public void Delete(object id)
         {

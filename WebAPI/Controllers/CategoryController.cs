@@ -30,14 +30,14 @@ namespace WebAPI.Controllers
 
 
         [HttpGet("[action]")]
-        public JsonResult GetAllCategory() => new JsonResult(Ok(_categoryRepository.GetAll()));
+        public async Task<JsonResult> GetAllCategory() => new JsonResult(Ok(await _categoryRepository.GetAll()));
 
 
         [HttpGet("{id}")]
-        public IActionResult GetCategoryById(int id)
+        public async Task<IActionResult> GetCategoryById(int id)
         {
             var createCategoryCommand = new CreateCategoryCommand(_categoryRepository);
-            var data = createCategoryCommand.GetCategoryById(id);
+            var data = await createCategoryCommand.GetCategoryById(id);
             if (data is null)
                 return NotFound($"Category Id {id} is not exists");
 
@@ -46,15 +46,15 @@ namespace WebAPI.Controllers
 
 
         [HttpPut("{id}")]
-        public IActionResult UpdateCategory(int id, [FromBody] AddCategoryDto category)
+        public async Task<IActionResult> UpdateCategory(int id, [FromBody] AddCategoryDto category)
         {
             if (id == 0)
                 return BadRequest();
 
             var createCategoryCommand = new CreateCategoryCommand(_categoryRepository);
-            var producData = createCategoryCommand.GetCategoryById(id);
+            var producData = await createCategoryCommand.GetCategoryById(id);
             if (producData is null)
-                return NotFound($"Product id {id} is not exists");
+                return NotFound($"Category id {id} is not exists");
 
             return Ok(createCategoryCommand.EditCategory(id, category));
         }

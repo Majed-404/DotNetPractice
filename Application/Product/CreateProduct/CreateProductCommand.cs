@@ -54,9 +54,9 @@ namespace Application.Product.CreateProduct
             }
         }
 
-        public IEnumerable<Domain.Entities.Product> Getproducts() => _productRepository.GetAll();
+        public async Task<IEnumerable<Domain.Entities.Product>> Getproducts() => await _productRepository.GetAll();
 
-        public Domain.Entities.Product GetProductById(int id) => _productRepository.GetById(id);
+        public async Task<Domain.Entities.Product> GetProductById(int id) => await _productRepository.GetById(id);
 
         public bool EditProduct(int id , AddProductDto input)
         {

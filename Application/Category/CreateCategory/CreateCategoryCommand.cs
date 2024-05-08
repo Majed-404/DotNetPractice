@@ -29,9 +29,9 @@ namespace Application.Category.CreateCategory
 
         }
 
-        public IEnumerable<Domain.Entities.Category> GetCategories() => _categoryRepository.GetAll();
+        public async Task<IEnumerable<Domain.Entities.Category>> GetCategories() => await _categoryRepository.GetAll();
 
-        public Domain.Entities.Category GetCategoryById(int id) => _categoryRepository.GetById(id);
+        public async Task<Domain.Entities.Category> GetCategoryById(int id) => await _categoryRepository.GetById(id);
 
 
         public bool EditCategory(int id, AddCategoryDto input)

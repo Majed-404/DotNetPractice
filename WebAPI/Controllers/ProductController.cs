@@ -25,11 +25,11 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetAll() => new JsonResult(Ok(_productRepository.GetAll()));
+        public async Task<JsonResult> GetAll() => new JsonResult(Ok( await _productRepository.GetAll()));
 
 
         [HttpGet("{id}")]
-        public JsonResult GetProductById(int id) => new JsonResult(Ok(_productRepository.GetById(id)));
+        public async Task<JsonResult> GetProductById(int id) => new JsonResult(Ok( await _productRepository.GetById(id)));
 
         [HttpPut("{id}")]
         public IActionResult UpdateProduct(int id, [FromBody] AddProductDto model)
