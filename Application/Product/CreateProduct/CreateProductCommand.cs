@@ -58,29 +58,27 @@ namespace Application.Product.CreateProduct
 
         public async Task<Domain.Entities.Product> GetProductById(int id) => await _productRepository.GetById(id);
 
-        public bool EditProduct(int id , AddProductDto input)
+        public async Task<bool> EditProduct(int id , AddProductDto input)
         {
             try
             {
                 if (id == 0)
                     return false;
                 
-                var productData = _productRepository.GetById(id);
+                var productData = await GetProductById(id);
 
                 if(productData == null)
-                    return false;
+                    throw new ArgumentNullException(nameof(productData));
 
-                Domain.Entities.Product product = new Domain.Entities.Product();
-                product.Id = id;
-                product.Description = input.Description;
-                product.NameAr = input.NameAr;
-                product.NameEn = input.NameEn;
-                product.Coast = input.Coast;
-                product.StockQuantity = input.StockQuantity;
-                product.Price = input.Price;
-                product.categoryId = input.categoryId;
+                productData.Description = input.Description;
+                productData.NameAr = input.NameAr;
+                productData.NameEn = input.NameEn;
+                productData.Coast = input.Coast;
+                productData.StockQuantity = input.StockQuantity;
+                productData.Price = input.Price;
+                productData.categoryId = input.categoryId;
 
-                _productRepository.Update(product);
+                _productRepository.Update(productData);
 
                 _productRepository.Save();
                 return true;
@@ -96,9 +94,9 @@ namespace Application.Product.CreateProduct
         {
             try
             {
-                //var productData = _productRepository.GetById(id);
-                //if (productData is null)
-                //    return $"Product id {id} is not exists";
+                var productData = GetProductById(id);
+                if (productData is null)
+                    throw new ArgumentNullException(nameof(productData));
 
                 _productRepository.Delete(id);
                 _productRepository.Save();

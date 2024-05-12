@@ -1,5 +1,6 @@
 ﻿using Application.Category.Dto;
 using Application.Services;
+using Domain.Entities;
 
 namespace Application.Category.CreateCategory
 {
@@ -34,12 +35,14 @@ namespace Application.Category.CreateCategory
         public async Task<Domain.Entities.Category> GetCategoryById(int id) => await _categoryRepository.GetById(id);
 
 
-        public bool EditCategory(int id, AddCategoryDto input)
+        public async Task<bool> EditCategory(int id, AddCategoryDto input)
         {
             try
             {
-                Domain.Entities.Category category = new Domain.Entities.Category();
-                category.Id = id;
+                var category = await GetCategoryById(id);
+                if(category is null)
+                    throw new ArgumentNullException(nameof(category));
+
                 category.NameAr = input.NameAr;
                 category.NameEn = input.NameEn;
                 category.IsShowable = input.IsShowable;
@@ -47,21 +50,22 @@ namespace Application.Category.CreateCategory
                 _categoryRepository.Update(category);
 
                 _categoryRepository.Save();
-                return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw;
             }
+
+            return true;
         }
 
         public string DeleteCategory(int id)
         {
             try
             {
-                //var productData = _productRepository.GetById(id);
-                //if (productData is null)
-                //    return $"Product id {id} is not exists";
+                var category = GetCategoryById(id);
+                if (category is null)
+                    throw new ArgumentNullException(nameof(category));
 
                 _categoryRepository.Delete(id);
                 _categoryRepository.Save();

@@ -52,18 +52,23 @@ namespace WebAPI.Controllers
                 return BadRequest();
 
             var createCategoryCommand = new CreateCategoryCommand(_categoryRepository);
-            var producData = await createCategoryCommand.GetCategoryById(id);
-            if (producData is null)
+            var categoryData = await createCategoryCommand.GetCategoryById(id);
+            if (categoryData is null)
                 return NotFound($"Category id {id} is not exists");
 
             return Ok(createCategoryCommand.EditCategory(id, category));
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteCategory(int id)
+        public async Task<IActionResult> DeleteCategory(int id)
         {
             if (id == 0)
                 return BadRequest();
+
+            var createCategoryCommand = new CreateCategoryCommand(_categoryRepository);
+            var categoryData = await createCategoryCommand.GetCategoryById(id);
+            if (categoryData is null)
+                return NotFound($"Category id {id} is not exists");
 
             _categoryRepository.Delete(id);
             _categoryRepository.Save();

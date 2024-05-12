@@ -32,23 +32,30 @@ namespace WebAPI.Controllers
         public async Task<JsonResult> GetProductById(int id) => new JsonResult(Ok( await _productRepository.GetById(id)));
 
         [HttpPut("{id}")]
-        public IActionResult UpdateProduct(int id, [FromBody] AddProductDto model)
+        public async Task<IActionResult> UpdateProduct(int id, [FromBody] AddProductDto model)
         {
             if (id == 0)
                 return BadRequest();
 
-            var producData = _productRepository.GetById(id);
+            var createProductCommand = new CreateProductCommand(_productRepository);
+            var producData = await createProductCommand.GetProductById(id);
             if (producData is null)
                 return NotFound($"Product id {id} is not exists");
 
-            var createProductCommand = new CreateProductCommand(_productRepository);
             return Ok(createProductCommand.EditProduct(id, model));
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteProduct(int id)
+        public async Task<IActionResult> DeleteProduct(int id)
         {
+            if(id == 0)
+                return BadRequest();
+
             var createProductCommand = new CreateProductCommand(_productRepository);
+            var producData = await createProductCommand.GetProductById(id);
+            if (producData is null)
+                return NotFound($"Product id {id} is not exists");
+
             return Ok(createProductCommand.DeleteProduct(id));
         }
 
