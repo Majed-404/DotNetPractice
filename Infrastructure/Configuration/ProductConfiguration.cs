@@ -5,7 +5,7 @@ using System.Reflection.Emit;
 
 namespace Infrastructure.Configuration
 {
-    public class ProductConfiguration : IEntityTypeConfiguration<Product>
+    internal class ProductConfiguration : IEntityTypeConfiguration<Product>
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
@@ -15,9 +15,9 @@ namespace Infrastructure.Configuration
 
             builder.Property(x => x.NameEn).HasColumnType("VARCHAR").HasMaxLength(255).IsUnicode(false);
 
-            builder.HasOne(c => c.category)
+            builder.HasOne(c => c.Category)
                 .WithMany(p => p.Products)
-                .HasForeignKey(p => p.categoryId);
+                .HasForeignKey("CategoryId").IsRequired(false).OnDelete(DeleteBehavior.SetNull);
 
             builder.OwnsMany<ProductAttachment>(x => x.Attachments, attachment =>
             {
@@ -25,18 +25,6 @@ namespace Infrastructure.Configuration
                 attachment.WithOwner().HasForeignKey("ProductId");
                 attachment.Property(x => x.Path).IsRequired();
             });
-
-            //builder.HasIndex(x => new { x.NameAr });
-            //builder.Property(x => x.NameAr).IsRequired().HasMaxLength(255);
-
-            //builder.Property(x => x.NameEn).HasColumnType("VARCHAR").HasMaxLength(255).IsUnicode(false);
-
-            //builder.OwnsMany<ProductAttachment>(x => x.Attachments, attachment =>
-            //{
-            //    attachment.ToTable("ProductAttachments");
-            //    attachment.WithOwner().HasForeignKey("ProductId");
-            //    attachment.Property(x => x.Path).IsRequired();
-            //});
 
         }
     }

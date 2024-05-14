@@ -31,7 +31,7 @@ namespace Application.Product.CreateProduct
                     Coast = input.Coast,
                     StockQuantity = input.StockQuantity,
                     Price = input.Price,
-                    categoryId = input.categoryId,
+                    CategoryId = input.categoryId,
                     Attachments = new List<ProductAttachment>
                 {
                     new ProductAttachment
@@ -76,8 +76,7 @@ namespace Application.Product.CreateProduct
                 productData.Coast = input.Coast;
                 productData.StockQuantity = input.StockQuantity;
                 productData.Price = input.Price;
-                productData.categoryId = input.categoryId;
-
+                productData.CategoryId = input.categoryId;
                 _productRepository.Update(productData);
 
                 _productRepository.Save();

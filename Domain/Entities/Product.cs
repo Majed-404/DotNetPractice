@@ -5,7 +5,6 @@ namespace Domain.Entities
 {
     public class Product
     {
-        [Key]
         public int Id { get; set; } //PK
         public string NameAr { get; set; }
         
@@ -15,9 +14,8 @@ namespace Domain.Entities
         public double Coast { get; set; }
         public int StockQuantity { get; set; }
 
-        [ForeignKey(nameof(category))]
-        public int categoryId { get; set; }
-        public Category category { get; set; }
+        public int? CategoryId { get; set; }
+        public Category Category { get; set; }
         public List<ProductAttachment> Attachments { get; set; }
     }
 }
