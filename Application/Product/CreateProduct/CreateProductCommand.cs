@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,28 +24,16 @@ namespace Application.Product.CreateProduct
         {
             try
             {
-                _productRepository.Insert(new Domain.Entities.Product
-                {
-                    Description = input.Description,
-                    NameAr = input.NameAr,
-                    NameEn = input.NameEn,
-                    Coast = input.Coast,
-                    StockQuantity = input.StockQuantity,
-                    Price = input.Price,
-                    CategoryId = input.categoryId,
-                    Attachments = new List<ProductAttachment>
-                {
-                    new ProductAttachment
-                    {
-                        Path = "majed"
-                    },
-                    new ProductAttachment
-                    {
-                        Path = "ahmed"
-                    }
-                }
-                });
-
+                //var cc = Domain.Entities.Product.Create
+                _productRepository.Insert(Domain.Entities.Product.Create(
+                    input.NameAr,
+                    input.NameEn,
+                    input.Description,
+                    input.Price,
+                    input.Coast,
+                    input.StockQuantity,
+                    input.categoryId
+                    ));
                 _productRepository.Save();
                 return true;
             }

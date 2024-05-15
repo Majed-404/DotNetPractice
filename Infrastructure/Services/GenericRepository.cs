@@ -13,7 +13,6 @@ namespace Infrastructure.Services
             _entity = _context.Set<T>();    
         }
         
-        public void Save() => _context.SaveChanges();
 
         public async Task<IEnumerable<T>> GetAll() => await _entity.AsNoTracking().ToListAsync();
 
@@ -48,5 +47,9 @@ namespace Infrastructure.Services
             var entity = _entity.Find(id);
             _entity.Remove(entity);
         }
+ 
+        public void Save() => _context.SaveChanges();
+
+
     }
 }

@@ -2,7 +2,6 @@
 using Application.Product.CreateProduct;
 using Application.Product.Dto;
 using Application.Services;
-using Infrastructure.Migrations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers

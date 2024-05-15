@@ -1,4 +1,6 @@
-﻿namespace Application.Product.Dto
+﻿using Domain.Entities;
+
+namespace Application.Product.Dto
 {
     public class AddProductDto
     {
