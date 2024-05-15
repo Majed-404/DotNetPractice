@@ -9,6 +9,8 @@ namespace Application.Services
 {
     public interface IGenericRepository<T> where T : class
     {
+        Task<IEnumerable<T>> GetAll();
+        Task<T> GetById(object id);
         IEnumerable<T> GetAll();
         T GetById(object id);
 
