@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,6 +22,16 @@ namespace Infrastructure.Services
         public void Save() => _context.SaveChanges();
 
         public async Task<IEnumerable<T>> GetAll() => await _entity.AsNoTracking().ToListAsync();
+
+        public async Task<IEnumerable<T>> GetAllWithRelated(string[] includes = null)
+        {
+            IQueryable<T> query = _entity;
+            if(includes is not null)
+                foreach (var include in includes)
+                    query = query.Include(include);
+
+            return await query.ToListAsync();
+        }
 
         public async Task<T> GetById(object id) => await _entity.FindAsync(id);
 

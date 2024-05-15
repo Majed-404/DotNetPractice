@@ -26,7 +26,16 @@ namespace WebAPI.Controllers
             return Ok(createProductCommand.AddNewProduct(input));
         }
 
-        [HttpGet]
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetAllProductsAndCategories()
+        {
+            var command = new CreateProductCommand(_productRepository);
+            var data = await command.GetProductAndCategory(new[] { "Category" });
+            return Ok(data);
+        }
+
+        [HttpGet("[action]")]
         public async Task<JsonResult> GetAll() => new JsonResult(Ok( await _productRepository.GetAll()));
 
 

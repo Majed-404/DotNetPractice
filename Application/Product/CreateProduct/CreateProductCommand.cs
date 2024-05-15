@@ -56,6 +56,11 @@ namespace Application.Product.CreateProduct
 
         public async Task<IEnumerable<Domain.Entities.Product>> Getproducts() => await _productRepository.GetAll();
 
+        public async Task<IEnumerable<Domain.Entities.Product>> GetProductAndCategory(string[] includes = null)
+        {
+            return await _productRepository.GetAllWithRelated(includes);
+        }
+
         public async Task<Domain.Entities.Product> GetProductById(int id) => await _productRepository.GetById(id);
 
         public async Task<bool> EditProduct(int id , AddProductDto input)

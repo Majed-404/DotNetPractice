@@ -1,5 +1,6 @@
 ﻿using Application.Category.CreateCategory;
 using Application.Category.Dto;
+using Application.Product.CreateProduct;
 using Application.Services;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,14 @@ namespace WebAPI.Controllers
             return Ok(category);
         }
 
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetAllProductsAndCategories()
+        {
+            //var command = new CreateCategoryCommand(_categoryRepository);
+            var data = await _categoryRepository.GetAllWithRelated(new[] { "Products" });
+            return Ok(data);
+        }
 
         [HttpGet("[action]")]
         public async Task<JsonResult> GetAllCategory() => new JsonResult(Ok(await _categoryRepository.GetAll()));
