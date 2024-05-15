@@ -20,7 +20,7 @@ namespace Infrastructure.Services
         
         public void Save() => _context.SaveChanges();
 
-        public async Task<IEnumerable<T>> GetAll() => await _entity.ToListAsync();
+        public async Task<IEnumerable<T>> GetAll() => await _entity.AsNoTracking().ToListAsync();
 
         public async Task<T> GetById(object id) => await _entity.FindAsync(id);
 

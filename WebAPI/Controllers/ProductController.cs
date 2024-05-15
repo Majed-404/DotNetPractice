@@ -1,4 +1,5 @@
-﻿using Application.Product.CreateProduct;
+﻿using Application.Category.CreateCategory;
+using Application.Product.CreateProduct;
 using Application.Product.Dto;
 using Application.Services;
 using Infrastructure.Migrations;
@@ -8,18 +9,19 @@ namespace WebAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ProductController : ControllerBase
+    public class ProductController(IGenericRepository<Domain.Entities.Product> productRepository
+        , IGenericRepository<Domain.Entities.Category> categoryRepository) : ControllerBase
     {
-        private readonly IGenericRepository<Domain.Entities.Product> _productRepository;
+        private readonly IGenericRepository<Domain.Entities.Product> _productRepository = productRepository;
+        private readonly IGenericRepository<Domain.Entities.Category> _categoryRepository = categoryRepository;
 
-        public ProductController(IGenericRepository<Domain.Entities.Product> productRepository)
-        {
-            _productRepository = productRepository;
-        }
 
         [HttpPost("[action]")]
-        public IActionResult AddNewProduct([FromBody] AddProductDto input)
+        public async Task<IActionResult> AddNewProduct([FromBody] AddProductDto input)
         {
+            if (!await CheckCategoryIsExists(_categoryRepository, input.categoryId))
+                return NotFound($"Category id {input.categoryId} is not exists");
+
             var createProductCommand = new CreateProductCommand(_productRepository);
             return Ok(createProductCommand.AddNewProduct(input));
         }
@@ -36,6 +38,9 @@ namespace WebAPI.Controllers
         {
             if (id == 0)
                 return BadRequest();
+
+            if(! await CheckCategoryIsExists(_categoryRepository,model.categoryId))
+                return NotFound($"Category id {model.categoryId} is not exists");
 
             var createProductCommand = new CreateProductCommand(_productRepository);
             var producData = await createProductCommand.GetProductById(id);
@@ -59,6 +64,15 @@ namespace WebAPI.Controllers
             return Ok(createProductCommand.DeleteProduct(id));
         }
 
+        public static async Task<bool> CheckCategoryIsExists(IGenericRepository<Domain.Entities.Category> _categoryRepository, int id)
+        {
+            var categoryCommand = new CreateCategoryCommand(_categoryRepository);
+            var categoryIsExist =await categoryCommand.GetCategoryById(id);
+            if (categoryIsExist is null)
+                return false;
+
+            return true;
+        }
 
     }
 }
