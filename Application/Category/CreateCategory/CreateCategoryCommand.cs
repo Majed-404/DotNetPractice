@@ -32,6 +32,11 @@ namespace Application.Category.CreateCategory
 
         public async Task<IEnumerable<Domain.Entities.Category>> GetCategories() => await _categoryRepository.GetAll();
 
+        public async Task<IEnumerable<Domain.Entities.Category>> GetCategoryAndProducs(string[] includes = null)
+        {
+            return await _categoryRepository.GetAllWithRelated(includes);
+        }
+
         public async Task<Domain.Entities.Category> GetCategoryById(int id) => await _categoryRepository.GetById(id);
 
 

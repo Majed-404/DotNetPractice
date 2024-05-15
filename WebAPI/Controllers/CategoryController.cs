@@ -32,8 +32,8 @@ namespace WebAPI.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> GetAllProductsAndCategories()
         {
-            //var command = new CreateCategoryCommand(_categoryRepository);
-            var data = await _categoryRepository.GetAllWithRelated(new[] { "Products" });
+            var command = new CreateCategoryCommand(_categoryRepository);
+            var data = await command.GetCategoryAndProducs(new[] { "Products" });
             return Ok(data);
         }
 
