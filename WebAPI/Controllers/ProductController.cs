@@ -3,6 +3,7 @@ using Application.Product.Dto;
 using Application.Services;
 using Infrastructure.Migrations;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
 
 namespace WebAPI.Controllers
 {
@@ -52,6 +53,17 @@ namespace WebAPI.Controllers
             return Ok(createProductCommand.DeleteProduct(id));
         }
 
+        [HttpGet("GetByName/{name}")]
+        public async Task<IActionResult> GetByName(string name)
+        {
+            //var createProductCommand = new CreateProductCommand(_productRepository);
+
+            var data =await _productRepository.FindByNameAsync(b => b.NameEn.Contains(name), new[] { "category" });
+            if (data is null)
+                return NotFound($"product name {name} is not exists");
+
+            return Ok(data);
+        }
 
     }
 }

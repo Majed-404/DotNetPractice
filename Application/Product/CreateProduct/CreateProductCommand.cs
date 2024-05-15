@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -91,6 +92,10 @@ namespace Application.Product.CreateProduct
             }
         }
 
+        public async Task<Domain.Entities.Product> GetByName(Expression<Func<Domain.Entities.Product, bool>> match, string[] includes = null)
+        {
+            return await _productRepository.FindByNameAsync(match, includes);
+        }
 
         public string DeleteProduct(int id)
         {
@@ -110,7 +115,6 @@ namespace Application.Product.CreateProduct
             }
 
         }
-
 
     }
 }

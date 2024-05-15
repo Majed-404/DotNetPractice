@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -47,6 +48,16 @@ namespace Infrastructure.Services
         {
             var entity = _entity.Find(id);
             _entity.Remove(entity);
+        }
+
+        public async Task<T> FindByNameAsync(Expression<Func<T, bool>> match, string[] includes = null)
+        {
+            IQueryable<T> query = _entity;
+            if (includes != null)
+                foreach (var include in includes)
+                    query = query.Include(include);
+
+            return await query.SingleOrDefaultAsync(match);
         }
     }
 }
