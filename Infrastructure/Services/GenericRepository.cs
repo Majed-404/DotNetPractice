@@ -1,11 +1,5 @@
 ﻿using Application.Services;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
@@ -22,6 +16,16 @@ namespace Infrastructure.Services
         public void Save() => _context.SaveChanges();
 
         public async Task<IEnumerable<T>> GetAll() => await _entity.AsNoTracking().ToListAsync();
+
+        public IEnumerable<T> GetAllForPaging(int skip,int take, string[] includes = null)
+        {
+            IQueryable<T> query = _entity;
+            if (includes is not null)
+                foreach (var include in includes)
+                    query = query.Include(include);
+
+            return query.Skip(skip).Take(take).ToList();
+        }
 
         public async Task<IEnumerable<T>> GetAllWithRelated(string[] includes = null)
         {

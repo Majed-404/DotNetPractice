@@ -36,8 +36,22 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<JsonResult> GetAll() => new JsonResult(Ok( await _productRepository.GetAll()));
+        public async Task<JsonResult> GetAllProducts() => new JsonResult(Ok( await _productRepository.GetAll()));
 
+
+        [HttpGet("[action]")]
+        public IActionResult GetProductForPaging(int skip, int take)
+        {
+            if (skip <= 0)
+                return BadRequest("Skip clause must be greater then zero.");
+
+            if (take <= 0)
+                return BadRequest("Take clause must be greater then zero.");
+
+            var command = new CreateProductCommand(_productRepository);
+            var data = command.GetAllForPaging(skip, take, new[] {"Category"});
+            return Ok(data);
+        }
 
         [HttpGet("{id}")]
         public async Task<JsonResult> GetProductById(int id) => new JsonResult(Ok( await _productRepository.GetById(id)));

@@ -56,6 +56,8 @@ namespace Application.Product.CreateProduct
 
         public async Task<IEnumerable<Domain.Entities.Product>> Getproducts() => await _productRepository.GetAll();
 
+        public IEnumerable<Domain.Entities.Product> GetAllForPaging(int skip, int take, string[] includes = null) => _productRepository.GetAllForPaging(skip, take, includes);
+
         public async Task<IEnumerable<Domain.Entities.Product>> GetProductAndCategory(string[] includes = null)
         {
             return await _productRepository.GetAllWithRelated(includes);

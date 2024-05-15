@@ -32,6 +32,8 @@ namespace Application.Category.CreateCategory
 
         public async Task<IEnumerable<Domain.Entities.Category>> GetCategories() => await _categoryRepository.GetAll();
 
+        public IEnumerable<Domain.Entities.Category> GetAllForPaging(int skip, int take, string[] includes = null) => _categoryRepository.GetAllForPaging(skip, take, includes);
+
         public async Task<IEnumerable<Domain.Entities.Category>> GetCategoryAndProducs(string[] includes = null)
         {
             return await _categoryRepository.GetAllWithRelated(includes);

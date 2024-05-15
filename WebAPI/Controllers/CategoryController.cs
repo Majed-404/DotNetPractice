@@ -40,6 +40,19 @@ namespace WebAPI.Controllers
         [HttpGet("[action]")]
         public async Task<JsonResult> GetAllCategory() => new JsonResult(Ok(await _categoryRepository.GetAll()));
 
+        [HttpGet("[action]")]
+        public IActionResult GetCategoryForPaging(int skip,int take)
+        {
+            if (skip <= 0)
+                return BadRequest("Skip clause must be greater then zero.");
+
+            if (take <= 0)
+                return BadRequest("Take clause must be greater then zero.");
+
+            var command = new CreateCategoryCommand(_categoryRepository);
+            var data = command.GetAllForPaging(skip, take);
+            return Ok(data);
+        }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCategoryById(int id)
