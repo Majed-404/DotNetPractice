@@ -1,0 +1,160 @@
+USE [TestDB]
+GO
+/****** Object:  Table [dbo].[__EFMigrationsHistory]    Script Date: 5/16/2024 9:14:48 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[__EFMigrationsHistory](
+	[MigrationId] [nvarchar](150) NOT NULL,
+	[ProductVersion] [nvarchar](32) NOT NULL,
+ CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY CLUSTERED 
+(
+	[MigrationId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Categories]    Script Date: 5/16/2024 9:14:48 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Categories](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[NameAr] [nvarchar](150) NOT NULL,
+	[NameEn] [varchar](150) NULL,
+	[IsShowable] [bit] NOT NULL,
+ CONSTRAINT [PK_Categories] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ProductAttachments]    Script Date: 5/16/2024 9:14:48 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ProductAttachments](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Path] [nvarchar](max) NOT NULL,
+	[ProductId] [int] NULL,
+ CONSTRAINT [PK_ProductAttachment] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Products]    Script Date: 5/16/2024 9:14:48 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Products](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Description] [nvarchar](max) NOT NULL,
+	[Price] [decimal](18, 2) NOT NULL,
+	[CategoryId] [int] NULL,
+	[Coast] [float] NOT NULL,
+	[NameAr] [nvarchar](max) NOT NULL,
+	[NameEn] [nvarchar](max) NOT NULL,
+	[StockQuantity] [int] NOT NULL,
+ CONSTRAINT [PK_Products] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20240425194130_init', N'8.0.4')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20240425195058_add_product_table', N'8.0.4')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20240425201610_add_procut_attachments_table', N'8.0.4')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20240428142955_add_category_table', N'8.0.4')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20240428145251_add_releation_between_product_and_category', N'8.0.4')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20240428151135_remove_column_name_from_product_table', N'8.0.4')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20240428151512_add_columns_nameAr_nameEn_coast_stockQuantity_to_product_table', N'8.0.4')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20240428151702_alter_nameAr_nameEn_length_product_table', N'8.0.4')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20240428152006_set_length_to_nameAr', N'8.0.4')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20240428153835_alter_nameAr_nameEn_Lenth', N'8.0.4')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20240428162414_alter_tbl_category', N'8.0.4')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20240428162658_add_category_table_and_relation_with_product', N'8.0.4')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20240428162935_alter_category_columns_length', N'8.0.4')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20240428163045_set_categoryNameEn_NotRequired', N'8.0.4')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20240428165454_drop_table', N'8.0.4')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20240428165558_alter_relation_product_category', N'8.0.4')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20240514083834_test2', N'8.0.4')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20240514083853_test3', N'8.0.4')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20240514093354_change_relation_product_category', N'8.0.4')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20240514125743_initial_migration', N'8.0.4')
+GO
+SET IDENTITY_INSERT [dbo].[Categories] ON 
+GO
+INSERT [dbo].[Categories] ([Id], [NameAr], [NameEn], [IsShowable]) VALUES (2, N'سيارات', N'Cars', 1)
+GO
+INSERT [dbo].[Categories] ([Id], [NameAr], [NameEn], [IsShowable]) VALUES (3, N'هواتف', N'Mobiles', 1)
+GO
+INSERT [dbo].[Categories] ([Id], [NameAr], [NameEn], [IsShowable]) VALUES (5, N'أقلام', N'Pens', 1)
+GO
+INSERT [dbo].[Categories] ([Id], [NameAr], [NameEn], [IsShowable]) VALUES (6, N'تحف', N'Antiques', 1)
+GO
+INSERT [dbo].[Categories] ([Id], [NameAr], [NameEn], [IsShowable]) VALUES (7, N'أثاث', N'furniture', 1)
+GO
+INSERT [dbo].[Categories] ([Id], [NameAr], [NameEn], [IsShowable]) VALUES (8, N'أدوات منزلية', N'Houseware', 1)
+GO
+SET IDENTITY_INSERT [dbo].[Categories] OFF
+GO
+SET IDENTITY_INSERT [dbo].[ProductAttachments] ON 
+GO
+INSERT [dbo].[ProductAttachments] ([Id], [Path], [ProductId]) VALUES (3, N'majed', 3)
+GO
+INSERT [dbo].[ProductAttachments] ([Id], [Path], [ProductId]) VALUES (4, N'ahmed', 3)
+GO
+INSERT [dbo].[ProductAttachments] ([Id], [Path], [ProductId]) VALUES (5, N'majed', 5)
+GO
+INSERT [dbo].[ProductAttachments] ([Id], [Path], [ProductId]) VALUES (6, N'ahmed', 5)
+GO
+INSERT [dbo].[ProductAttachments] ([Id], [Path], [ProductId]) VALUES (7, N'majed', 6)
+GO
+INSERT [dbo].[ProductAttachments] ([Id], [Path], [ProductId]) VALUES (8, N'ahmed', 6)
+GO
+SET IDENTITY_INSERT [dbo].[ProductAttachments] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Products] ON 
+GO
+INSERT [dbo].[Products] ([Id], [Description], [Price], [CategoryId], [Coast], [NameAr], [NameEn], [StockQuantity]) VALUES (3, N'Test 2', CAST(543.00 AS Decimal(18, 2)), 3, 12, N'اختبار', N'Test', 12)
+GO
+INSERT [dbo].[Products] ([Id], [Description], [Price], [CategoryId], [Coast], [NameAr], [NameEn], [StockQuantity]) VALUES (5, N'Test 2', CAST(543.00 AS Decimal(18, 2)), 2, 12, N'سيارة', N'Test', 12)
+GO
+INSERT [dbo].[Products] ([Id], [Description], [Price], [CategoryId], [Coast], [NameAr], [NameEn], [StockQuantity]) VALUES (6, N'New Mobile', CAST(650.00 AS Decimal(18, 2)), 3, 300, N'ايفون 13 برو ماكس', N'IPhone 13 Pro max', 50)
+GO
+SET IDENTITY_INSERT [dbo].[Products] OFF
+GO
+ALTER TABLE [dbo].[Products] ADD  DEFAULT ((0.0000000000000000e+000)) FOR [Coast]
+GO
+ALTER TABLE [dbo].[Products] ADD  DEFAULT (N'') FOR [NameAr]
+GO
+ALTER TABLE [dbo].[Products] ADD  DEFAULT (N'') FOR [NameEn]
+GO
+ALTER TABLE [dbo].[ProductAttachments]  WITH CHECK ADD  CONSTRAINT [FK_ProductAttachment_Products_ProductId] FOREIGN KEY([ProductId])
+REFERENCES [dbo].[Products] ([Id])
+GO
+ALTER TABLE [dbo].[ProductAttachments] CHECK CONSTRAINT [FK_ProductAttachment_Products_ProductId]
+GO
